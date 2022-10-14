@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <script>
+        // My code
+
+        function getComputerChoice() {
+
+            return Math.floor(Math.random() * 3);
+
+            // chaque numéro, de 0 à 2, va correspondre à un élément
+
+        }
+
+        function getPlayerChoice() {
+
+            // On ne va pas traiter les erreurs possibles
+
+            const playerChoice = prompt("Choose your weapon ! (rock, paper, or scissors)");
+
+            switch(playerChoice) {
+                case "rock":
+                    return 0;
+                    break;
+
+                case "paper":
+                    return 1;
+                    break;
+
+                case "scissors":
+                    return 2;
+                    break;
+
+                default:
+                    return null;
+                    break;
+            }
+
+        }
+
+        function playRound(playerChoice, computerChoice) {
+
+            // Comment comparer les choix des joueurs ?
+            // En cas de nulle, on ne retourne rien
+
+            if ((playerChoice + 1) % 3 === computerChoice) {
+                return "computer";
+            } else if ((computerChoice + 1) % 3 === playerChoice) {
+                return "player";
+            }
+
+            return null;
+            
+        }
+
+        function game() {
+
+            let playerScore = 0,
+                computerScore = 0;
+
+            for (let i = 0; i < 5; i++) {
+                const playerChoice = getPlayerChoice();
+                const computerChoice = getComputerChoice();
+                const winner = playRound(playerChoice, computerChoice);
+
+                if (winner === "player") {
+                    playerScore++;
+                    console.log("You win this round!")
+                } else if (winner === "computer") {
+                    computerScore++;
+                    console.log("The computer win this round!")
+                } else {
+                    console.log("That's a draw!");
+                }
+            }
+
+            (playerScore > computerScore) ? console.log("You win!") :
+            (playerScore < computerScore) ? console.log("The computer wins!") :
+            console.log("The final score is equal!")
+
+        }
+
+        
+        // 1: On récupère le choix de l'utilisateur et de l'ordinateur
+        // 2: on trouve désigne le gagnant de la ronde
+        // 3: On ajoute le score et affiche le résultat ;
+        // 4: On fait de 1 à 3 cinq fois
+        // 5: À la fin de la cinquième ronde, on désigne le gagnant
+
+        game();
+
+    </script>
+
+</body>
+</html>
