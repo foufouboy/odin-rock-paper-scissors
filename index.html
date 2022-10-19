@@ -3,95 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>My Rock-Paper-Scissors UI</h1>
+    </header>
+    <div class="buttons-container">
+        <button class="rock">Rock</button>
+        <button class="paper">Paper</button>
+        <button class="scissors">Scissors</button>
+    </div>
+    <div class="results">
+        <div class="user score">
+            <p>Your Score :</p>
+            <p class="score-n">0</p>
+        </div>
+        <div class="middle-score">
+           <button>New game!</button>
+           <p></p>
+        </div>
+        <div class="comp score">
+            <p>Comp Score :</p>
+            <p class="score-n">0</p>
+        </div>
+    </div>
+
     <script>
         // My code
 
-        function getComputerChoice() {
+        function getComputerChoice() {return Math.floor(Math.random() * 3);}
+        function endGame() {
 
-            return Math.floor(Math.random() * 3);
+            rock.removeEventListener("click", rockPlayed);
+            paper.removeEventListener("click", paperPlayed);
+            scissors.removeEventListener("click", scissorsPlayed);
 
-            // chaque numéro, de 0 à 2, va correspondre à un élément
+            newGame.style.display = "initial";
 
+            (playerScore === 5) ? middleScorePara.textContent = "You win the game!" : 
+                middleScorePara.textContent = "The computer wins the game!";
+
+            
+            
         }
 
-        function getPlayerChoice() {
+        const newGame = document.querySelector(".results button");
+        newGame.addEventListener("click", game);
 
-            // On ne va pas traiter les erreurs possibles
+        const rock = document.querySelector(".rock");
+        const paper = document.querySelector(".paper");
+        const scissors = document.querySelector(".scissors");
 
-            const playerChoice = prompt("Choose your weapon ! (rock, paper, or scissors)");
+        const userScore = document.querySelector(".user .score-n");
+        const compScore = document.querySelector(".comp .score-n")
 
-            switch(playerChoice) {
-                case "rock":
-                    return 0;
-                    break;
+        const middleScorePara = document.querySelector(".middle-score p");
+        
+        let playerScore = 0,
+            computerScore = 0;
 
-                case "paper":
-                    return 1;
-                    break;
-
-                case "scissors":
-                    return 2;
-                    break;
-
-                default:
-                    return null;
-                    break;
-            }
-
+        const rockPlayed = (e) => {
+            playRound(0, getComputerChoice());
         }
+
+        const paperPlayed = (e) => {
+            playRound(1, getComputerChoice());
+        }
+
+        const scissorsPlayed = (e) => {
+            playRound(2, getComputerChoice());
+        }
+
 
         function playRound(playerChoice, computerChoice) {
 
-            // Comment comparer les choix des joueurs ?
-            // En cas de nulle, on ne retourne rien
-
             if ((playerChoice + 1) % 3 === computerChoice) {
-                return "computer";
+                middleScorePara.textContent = "The computer wins!";
+                compScore.textContent = ++computerScore;
             } else if ((computerChoice + 1) % 3 === playerChoice) {
-                return "player";
+                middleScorePara.textContent = "You win!";
+                userScore.textContent = ++playerScore;
+            } else {
+                middleScorePara.textContent = "It's a draw!";
             }
 
-            return null;
+            if (playerScore === 5 || computerScore === 5) {
+                endGame();
+            }
             
         }
 
         function game() {
 
-            let playerScore = 0,
-                computerScore = 0;
+            newGame.style.display = "none";
+            userScore.textContent = "0";
+            compScore.textContent = "0";
+            middleScorePara.textContent = "";
+            playerScore = computerScore = 0;
 
-            for (let i = 0; i < 5; i++) {
-                const playerChoice = getPlayerChoice();
-                const computerChoice = getComputerChoice();
-                const winner = playRound(playerChoice, computerChoice);
-
-                if (winner === "player") {
-                    playerScore++;
-                    console.log("You win this round!")
-                } else if (winner === "computer") {
-                    computerScore++;
-                    console.log("The computer win this round!")
-                } else {
-                    console.log("That's a draw!");
-                }
-            }
-
-            (playerScore > computerScore) ? console.log("You win!") :
-            (playerScore < computerScore) ? console.log("The computer wins!") :
-            console.log("The final score is equal!")
+            rock.addEventListener("click", rockPlayed);
+            paper.addEventListener("click", paperPlayed);
+            scissors.addEventListener("click", scissorsPlayed);
 
         }
 
         
-        // 1: On récupère le choix de l'utilisateur et de l'ordinateur
-        // 2: on trouve désigne le gagnant de la ronde
-        // 3: On ajoute le score et affiche le résultat ;
-        // 4: On fait de 1 à 3 cinq fois
-        // 5: À la fin de la cinquième ronde, on désigne le gagnant
+        // 1: Quand le bouton new game est cliqué, on démarre le jeu
+        // 2: Quand un bouton de choix est cliqué, on récupère sa valeur
+        // 3: On génère celle de l'ordinateur
+        // 4: On calcule qui a gagné
+        // 5: On fait ça jusqu'à ce qu'un des joueurs soit à 5
+        // 6: Après quoi on affiche qui a gagné, et le bouton pour démarrer une nouvelle
+        // partie
 
-        game();
+        // game();
+
 
     </script>
 
